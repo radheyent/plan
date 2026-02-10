@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vi Activation Message Generator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+            width: 100%;
+            padding: 40px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: #667eea;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        input[type="text"],
+        input[type="tel"],
+        select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        input[type="text"]:focus,
+        input[type="tel"]:focus,
+        select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .share-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 30px;
+        }
+
+        .share-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(37, 211, 102, 0.3);
+        }
+
+        .share-btn:active {
+            transform: translateY(0);
+        }
+
+        .share-btn svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .preview {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 30px;
+            display: none;
+        }
+
+        .preview.show {
+            display: block;
+        }
+
+        .preview h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+
+        .preview-text {
+            white-space: pre-wrap;
+            font-family: monospace;
+            font-size: 13px;
+            color: #333;
+            line-height: 1.6;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .required {
+            color: #e74c3c;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 25px;
+            }
+
+            .header h1 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📱 Vi Activation Message</h1>
+            <p>Fill details and share via WhatsApp</p>
+        </div>
+
+        <form id="messageForm">
+            <div class="form-group">
+                <label for="phoneNumber">WhatsApp Number <span class="required">*</span></label>
+                <input type="tel" id="phoneNumber" placeholder="Enter 10-digit number" maxlength="10" required>
+            </div>
+
+            <div class="form-group">
+                <label for="customerName">Customer Name <span class="required">*</span></label>
+                <input type="text" id="customerName" placeholder="Enter customer name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="customerNumber">Customer Number <span class="required">*</span></label>
+                <input type="tel" id="customerNumber" placeholder="Enter customer mobile number" maxlength="10" required>
+            </div>
+
+            <div class="form-group">
+                <label for="activationType">Activation Type <span class="required">*</span></label>
+                <select id="activationType" required>
+                    <option value="">Select Type</option>
+                    <option value="New">New</option>
+                    <option value="MNP">MNP</option>
+                    <option value="Pre to Post">Pre to Post</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="totalConnections">Total Connections <span class="required">*</span></label>
+                <select id="totalConnections" required>
+                    <option value="">Select Connections</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="Addon 299">Addon 299</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="planRental">Plan Rental <span class="required">*</span></label>
+                <select id="planRental" required>
+                    <option value="">Select Plan</option>
+                    <option value="451">₹451</option>
+                    <option value="701">₹701</option>
+                    <option value="1000">₹1000</option>
+                    <option value="1201">₹1201</option>
+                    <option value="1401">₹1401</option>
+                </select>
+            </div>
+
+            <button type="submit" class="share-btn">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                </svg>
+                Share on WhatsApp
+            </button>
+        </form>
+
+        <div class="preview" id="preview">
+            <h3>📋 Message Preview:</h3>
+            <div class="preview-text" id="previewText"></div>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById('messageForm');
+        const preview = document.getElementById('preview');
+        const previewText = document.getElementById('previewText');
+
+        // Show preview on input change
+        form.addEventListener('input', updatePreview);
+        form.addEventListener('change', updatePreview);
+
+        function updatePreview() {
+            const message = generateMessage();
+            if (message) {
+                previewText.textContent = message;
+                preview.classList.add('show');
+            }
+        }
+
+        function generateMessage() {
+            const customerName = document.getElementById('customerName').value;
+            const customerNumber = document.getElementById('customerNumber').value;
+            const activationType = document.getElementById('activationType').value;
+            const totalConnections = document.getElementById('totalConnections').value;
+            const planRental = document.getElementById('planRental').value;
+
+            if (!customerName || !customerNumber || !activationType || !totalConnections || !planRental) {
+                return '';
+            }
+
+            let primaryData, shareableData;
+            
+            // Determine data based on plan
+            switch(planRental) {
+                case '701':
+                    primaryData = '70GB';
+                    shareableData = '10GB';
+                    break;
+                case '1000':
+                    primaryData = '70GB';
+                    shareableData = '10GB';
+                    break;
+                case '1201':
+                    primaryData = '140GB';
+                    shareableData = '20GB';
+                    break;
+                case '1401':
+                    primaryData = '140GB';
+                    shareableData = '20GB';
+                    break;
+                case '451':
+                    return generate451Message(customerName, customerNumber, activationType);
+            }
+
+            return generateFamilyMessage(customerName, customerNumber, activationType, totalConnections, planRental, primaryData, shareableData);
+        }
+
+        function generate451Message(customerName, customerNumber, activationType) {
+            return `Namaskar ${customerName} Sir,
+Your ${activationType} Number ${customerNumber} Taken Request for.
+1 Connections Plan
+💰 Monthly Rental: ₹451/- Only
+━━━━━━━━━━━━
+👑 Benefits
+📶 50GB Data with 200GB Rollover
+🌙 Unlimited Night Data
+⚡ Unlimited 5G*
+📞 Unlimited Calls (All India)
+✉️ 3000 SMS / Month (All India)
+🎁 ANY 2 COMPLIMENTARY BENEFITS
+🎬 JioHotstar
+📺 Sony LIV
+━━━━━━━━━━━━
+➕all charges gst as per applicable govt. norms
+➕ Extra Family SIM Option
+💳 ₹299/month per SIM
+━━━━━━━━━━━━
+🔐 Customer Declaration :
+✔️ SIM card & numbers received at my premises
+✔️ No hard copy / photo copy provided to agent and activation completed via digital process
+✔️ No any Visit Charges Given to Agent
+📍 Accept? Reply "YES" or No`;
+        }
+
+        function generateFamilyMessage(customerName, customerNumber, activationType, totalConnections, planRental, primaryData, shareableData) {
+            return `Namaskar ${customerName} Sir,
+Your ${activationType} Number ${customerNumber} Taken Request for.
+👨‍👩‍👧‍👦 ${totalConnections} Connections Plan
+💰 Monthly Rental: ₹${planRental}/- Only
+━━━━━━━━━━━━
+👑 Primary Number Benefits
+📶 ${primaryData} Data with 200GB Rollover
+🌙 Unlimited Night Data
+⚡ Unlimited 5G*
+📞 Unlimited Calls (All India)
+✉️ 3000 SMS / Month (All India)
+━━━━━━━━━━━━
+👨‍👩‍👦 Additional Family Members Get
+📶 40GB Data with 200GB Rollover
+🎉 Wohoo! Get ${shareableData} Extra Shareable Data within Family Members
+━━━━━━━━━━━━
+🎁 ANY 2 COMPLIMENTARY BENEFITS
+📺 Vi Movies & TV
+🛒 Amazon Prime
+🎬 JioHotstar
+📺 Sony LIV
+🛡️ Norton Mobile Security
+━━━━━━━━━━━━
+➕all charges gst as per applicable govt. norms
+➕ Extra Family SIM Option
+💳 ₹299/month per SIM
+━━━━━━━━━━━━
+🔐 Customer Declaration :
+✔️ SIM card & numbers received at my premises
+✔️ No hard copy / photo copy provided to agent and activation completed via digital process
+✔️ No any Visit Charges Given to Agent
+📍 Accept? Reply "YES" or No`;
+        }
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const phoneNumber = document.getElementById('phoneNumber').value;
+            
+            // Validate phone number
+            if (phoneNumber.length !== 10 || !/^\d+$/.test(phoneNumber)) {
+                alert('Please enter a valid 10-digit phone number');
+                return;
+            }
+
+            const message = generateMessage();
+            
+            if (!message) {
+                alert('Please fill all required fields');
+                return;
+            }
+
+            // Create WhatsApp URL
+            const whatsappURL = `https://wa.me/91${phoneNumber}?text=${encodeURIComponent(message)}`;
+            
+            // Open WhatsApp
+            window.open(whatsappURL, '_blank');
+        });
+
+        // Only allow numbers in phone fields
+        document.getElementById('phoneNumber').addEventListener('input', function(e) {
+            this.value = this.value.replace(/[^0-9]/g, '');
+        });
+
+        document.getElementById('customerNumber').addEventListener('input', function(e) {
+            this.value = this.value.replace(/[^0-9]/g, '');
+        });
+    </script>
+</body>
+</html>
