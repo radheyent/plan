@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vi Activation Message</title>
+    <title>Vi Activation Message Generator</title>
     <style>
         * {
             margin: 0;
@@ -12,8 +12,8 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%);
             min-height: 100vh;
             padding: 20px;
             display: flex;
@@ -23,37 +23,47 @@
 
         .container {
             background: white;
-            border-radius: 20px;
+            border-radius: 16px;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            max-width: 600px;
+            max-width: 650px;
             width: 100%;
-            padding: 40px;
+            overflow: hidden;
         }
 
         .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px 40px;
             text-align: center;
-            margin-bottom: 30px;
         }
 
         .header h1 {
-            color: #667eea;
-            font-size: 28px;
-            margin-bottom: 10px;
+            font-size: 26px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
         }
 
         .header p {
-            color: #666;
             font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .form-wrapper {
+            padding: 32px;
         }
 
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 18px;
         }
 
         label {
             display: block;
             margin-bottom: 8px;
-            color: #333;
+            color: #2d3748;
             font-weight: 600;
             font-size: 14px;
         }
@@ -62,12 +72,13 @@
         input[type="tel"],
         select {
             width: 100%;
-            padding: 12px 15px;
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
+            padding: 12px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
             font-size: 15px;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
             font-family: inherit;
+            background: white;
         }
 
         input[type="text"]:focus,
@@ -78,13 +89,103 @@
             box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
 
+        input[type="text"]:hover,
+        input[type="tel"]:hover,
+        select:hover {
+            border-color: #cbd5e0;
+        }
+
+        .required {
+            color: #e53e3e;
+        }
+
+        .optional-section {
+            margin-top: 24px;
+            padding-top: 20px;
+            border-top: 2px dashed #e2e8f0;
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .add-old-rental-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: #f7fafc;
+            border: 2px dashed #cbd5e0;
+            border-radius: 8px;
+            color: #667eea;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: inherit;
+            flex-shrink: 0;
+            height: 44px;
+        }
+
+        .add-old-rental-btn:hover {
+            background: #edf2f7;
+            border-color: #667eea;
+            transform: translateY(-1px);
+        }
+
+        .add-old-rental-btn:active {
+            transform: translateY(0);
+        }
+
+        .add-old-rental-btn .icon {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .old-rental-dropdown {
+            display: none;
+            animation: slideIn 0.3s ease;
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .old-rental-dropdown.show {
+            display: block;
+        }
+
+        .old-rental-dropdown .form-group {
+            margin-bottom: 0;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .remove-btn {
+            background: #fff5f5;
+            border-color: #fc8181;
+            color: #e53e3e;
+        }
+
+        .remove-btn:hover {
+            background: #fed7d7;
+            border-color: #e53e3e;
+        }
+
         .share-btn {
             width: 100%;
-            padding: 15px;
+            padding: 16px;
             background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
             color: white;
             border: none;
-            border-radius: 10px;
+            border-radius: 8px;
             font-size: 16px;
             font-weight: 600;
             cursor: pointer;
@@ -93,12 +194,13 @@
             align-items: center;
             justify-content: center;
             gap: 10px;
-            margin-top: 30px;
+            margin-top: 24px;
+            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
         }
 
         .share-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(37, 211, 102, 0.3);
+            box-shadow: 0 8px 20px rgba(37, 211, 102, 0.4);
         }
 
         .share-btn:active {
@@ -106,16 +208,17 @@
         }
 
         .share-btn svg {
-            width: 24px;
-            height: 24px;
+            width: 22px;
+            height: 22px;
         }
 
         .preview {
-            background: #f5f5f5;
-            padding: 20px;
-            border-radius: 10px;
-            margin-top: 30px;
+            background: #f7fafc;
+            padding: 24px;
+            border-radius: 12px;
+            margin-top: 24px;
             display: none;
+            border: 2px solid #e2e8f0;
         }
 
         .preview.show {
@@ -123,109 +226,192 @@
         }
 
         .preview h3 {
-            color: #667eea;
-            margin-bottom: 15px;
-            font-size: 16px;
+            color: #2d3748;
+            margin-bottom: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .preview-text {
             white-space: pre-wrap;
-            font-family: monospace;
+            font-family: 'Courier New', monospace;
             font-size: 13px;
-            color: #333;
-            line-height: 1.6;
+            color: #2d3748;
+            line-height: 1.7;
             background: white;
-            padding: 15px;
+            padding: 16px;
             border-radius: 8px;
             max-height: 400px;
             overflow-y: auto;
+            border: 1px solid #e2e8f0;
         }
 
-        .required {
-            color: #e74c3c;
+        .info-badge {
+            display: inline-block;
+            background: #edf2f7;
+            color: #4a5568;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            margin-left: 8px;
+            font-weight: 500;
         }
 
         @media (max-width: 480px) {
-            .container {
-                padding: 25px;
+            .form-wrapper {
+                padding: 20px;
+            }
+
+            .header {
+                padding: 24px;
             }
 
             .header h1 {
-                font-size: 24px;
+                font-size: 22px;
             }
+
+            .container {
+                border-radius: 12px;
+            }
+
+            .optional-section {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .add-old-rental-btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .old-rental-dropdown {
+                width: 100%;
+            }
+        }
+
+        /* Custom scrollbar for preview */
+        .preview-text::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .preview-text::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+
+        .preview-text::-webkit-scrollbar-thumb {
+            background: #cbd5e0;
+            border-radius: 4px;
+        }
+
+        .preview-text::-webkit-scrollbar-thumb:hover {
+            background: #a0aec0;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>📱 Vi Activation Message</h1>
-            <p>Fill details and share via WhatsApp</p>
+            <h1>
+                <span>📱</span>
+                Vi Activation Message
+            </h1>
+            <p>Generate professional activation messages for WhatsApp</p>
         </div>
 
-        <form id="messageForm">
-            <div class="form-group">
-                <label for="phoneNumber">WhatsApp Number <span class="required">*</span></label>
-                <input type="tel" id="phoneNumber" placeholder="Enter 10-digit number" maxlength="10" required>
-            </div>
+        <div class="form-wrapper">
+            <form id="messageForm">
+                <div class="form-group">
+                    <label for="phoneNumber">WhatsApp Number <span class="required">*</span></label>
+                    <input type="tel" id="phoneNumber" placeholder="Enter 10-digit number" maxlength="10" required>
+                </div>
 
-            <div class="form-group">
-                <label for="customerName">Customer Name <span class="required">*</span></label>
-                <input type="text" id="customerName" placeholder="Enter customer name" required>
-            </div>
+                <div class="form-group">
+                    <label for="customerName">Customer Name <span class="required">*</span></label>
+                    <input type="text" id="customerName" placeholder="Enter customer name" required>
+                </div>
 
-            <div class="form-group">
-                <label for="customerNumber">Customer New Number <span class="required">*</span></label>
-                <input type="tel" id="customerNumber" placeholder="Enter customer mobile number" maxlength="10" required>
-            </div>
+                <div class="form-group">
+                    <label for="customerNumber">Customer New Number <span class="required">*</span></label>
+                    <input type="tel" id="customerNumber" placeholder="Enter customer mobile number" maxlength="10" required>
+                </div>
 
-            <div class="form-group">
-                <label for="activationType">Activation Type <span class="required">*</span></label>
-                <select id="activationType" required>
-                    <option value="">Select Type</option>
-                    <option value="New">New</option>
-                    <option value="MNP">MNP</option>
-                    <option value="Pre to Post">Pre to Post</option>
-                </select>
-            </div>
+                <div class="form-group">
+                    <label for="activationType">Activation Type <span class="required">*</span></label>
+                    <select id="activationType" required>
+                        <option value="">Select Type</option>
+                        <option value="New">New</option>
+                        <option value="MNP">MNP</option>
+                        <option value="Pre to Post">Pre to Post</option>
+                    </select>
+                </div>
 
-            <div class="form-group">
-                <label for="totalConnections">Total Connections <span class="required">*</span></label>
-                <select id="totalConnections" required>
-                    <option value="">Select Connections</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="Addon 299">Addon 299</option>
-                </select>
-            </div>
+                <div class="form-group">
+                    <label for="totalConnections">Total Connections <span class="required">*</span></label>
+                    <select id="totalConnections" required>
+                        <option value="">Select Connections</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="Addon 299">Addon 299</option>
+                    </select>
+                </div>
 
-            <div class="form-group">
-                <label for="planRental">Plan Rental <span class="required">*</span></label>
-                <select id="planRental" required>
-                    <option value="">Select Plan</option>
-                    <option value="451" data-connections="1">₹451</option>
-                    <option value="551" data-connections="1">₹551</option>
-                    <option value="701" data-connections="2,3,4,5">₹701</option>
-                    <option value="1000" data-connections="2,3,4,5">₹1000</option>
-                    <option value="1201" data-connections="2,3,4,5">₹1201</option>
-                    <option value="1401" data-connections="2,3,4,5">₹1401</option>
-                </select>
-            </div>
+                <div class="form-group">
+                    <label for="planRental">Plan Rental <span class="required">*</span></label>
+                    <select id="planRental" required>
+                        <option value="">Select Plan</option>
+                        <option value="451" data-connections="1">₹451</option>
+                        <option value="551" data-connections="1">₹551</option>
+                        <option value="701" data-connections="2,3,4,5">₹701</option>
+                        <option value="1000" data-connections="2,3,4,5">₹1000</option>
+                        <option value="1201" data-connections="2,3,4,5">₹1201</option>
+                        <option value="1401" data-connections="2,3,4,5">₹1401</option>
+                    </select>
+                </div>
 
-            <button type="submit" class="share-btn">
-                <svg viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-                </svg>
-                Share on WhatsApp
-            </button>
-        </form>
+                <!-- Optional Old Rental Section -->
+                <div class="optional-section">
+                    <button type="button" class="add-old-rental-btn" id="toggleOldRentalBtn">
+                        <span class="icon">+</span>
+                        <span class="btn-text">Add old plan rental</span>
+                        <span class="info-badge">Optional</span>
+                    </button>
 
-        <div class="preview" id="preview">
-            <h3>📋 Message Preview:</h3>
-            <div class="preview-text" id="previewText"></div>
+                    <div class="old-rental-dropdown" id="oldRentalDropdown">
+                        <div class="form-group">
+                            <label for="oldPlanRental">Previous Plan Rental</label>
+                            <select id="oldPlanRental">
+                                <option value="">Select Previous Plan</option>
+                                <option value="Below 299">Below ₹299</option>
+                                <option value="351">₹351</option>
+                                <option value="451">₹451</option>
+                                <option value="551">₹551</option>
+                                <option value="701">₹701</option>
+                                <option value="1201">₹1201</option>
+                                <option value="1401">₹1401</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="share-btn">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+                    </svg>
+                    Share via WhatsApp
+                </button>
+
+                <div class="preview" id="preview">
+                    <h3>📝 Message Preview</h3>
+                    <div class="preview-text" id="previewText"></div>
+                </div>
+            </form>
         </div>
     </div>
 
@@ -235,13 +421,36 @@
         const previewText = document.getElementById('previewText');
         const totalConnectionsSelect = document.getElementById('totalConnections');
         const planRentalSelect = document.getElementById('planRental');
+        const toggleOldRentalBtn = document.getElementById('toggleOldRentalBtn');
+        const oldRentalDropdown = document.getElementById('oldRentalDropdown');
+        const oldPlanRentalSelect = document.getElementById('oldPlanRental');
+        let oldRentalVisible = false;
+
+        // Toggle old rental section
+        toggleOldRentalBtn.addEventListener('click', function() {
+            oldRentalVisible = !oldRentalVisible;
+            
+            if (oldRentalVisible) {
+                oldRentalDropdown.classList.add('show');
+                toggleOldRentalBtn.classList.add('remove-btn');
+                toggleOldRentalBtn.querySelector('.icon').textContent = '−';
+                toggleOldRentalBtn.querySelector('.btn-text').textContent = 'Remove old plan rental';
+            } else {
+                oldRentalDropdown.classList.remove('show');
+                toggleOldRentalBtn.classList.remove('remove-btn');
+                toggleOldRentalBtn.querySelector('.icon').textContent = '+';
+                toggleOldRentalBtn.querySelector('.btn-text').textContent = 'Add old plan rental';
+                oldPlanRentalSelect.value = '';
+            }
+            
+            updatePreview();
+        });
 
         // Filter plans based on total connections
         totalConnectionsSelect.addEventListener('change', function() {
             const selectedConnections = this.value;
             const planOptions = planRentalSelect.querySelectorAll('option');
             
-            // Reset plan selection
             planRentalSelect.value = '';
             
             planOptions.forEach(option => {
@@ -253,13 +462,10 @@
                 const allowedConnections = option.getAttribute('data-connections');
                 
                 if (selectedConnections === '1') {
-                    // Show only 451 and 551 for 1 connection
                     option.style.display = allowedConnections === '1' ? 'block' : 'none';
                 } else if (selectedConnections === 'Addon 299') {
-                    // Show all plans for Addon 299
                     option.style.display = 'block';
                 } else {
-                    // Show only family plans (701-1401) for 2+ connections
                     option.style.display = allowedConnections && allowedConnections.includes(selectedConnections) ? 'block' : 'none';
                 }
             });
@@ -267,7 +473,7 @@
             updatePreview();
         });
 
-        // Show preview on input change
+        // Update preview on input change
         form.addEventListener('input', updatePreview);
         form.addEventListener('change', updatePreview);
 
@@ -285,6 +491,7 @@
             const activationType = document.getElementById('activationType').value;
             const totalConnections = document.getElementById('totalConnections').value;
             const planRental = document.getElementById('planRental').value;
+            const oldPlanRental = oldPlanRentalSelect.value;
 
             if (!customerName || !customerNumber || !activationType || !totalConnections || !planRental) {
                 return '';
@@ -295,9 +502,9 @@
             // Determine data based on plan
             switch(planRental) {
                 case '451':
-                    return generate451Message(customerName, customerNumber, activationType);
+                    return generate451Message(customerName, customerNumber, activationType, oldPlanRental);
                 case '551':
-                    return generate551Message(customerName, customerNumber, activationType);
+                    return generate551Message(customerName, customerNumber, activationType, oldPlanRental);
                 case '701':
                     primaryData = '70GB';
                     shareableData = '10GB';
@@ -316,21 +523,29 @@
                     break;
             }
 
-            return generateFamilyMessage(customerName, customerNumber, activationType, totalConnections, planRental, primaryData, shareableData);
+            return generateFamilyMessage(customerName, customerNumber, activationType, totalConnections, planRental, primaryData, shareableData, oldPlanRental);
         }
 
-        function generate451Message(customerName, customerNumber, activationType) {
-            return `Namaskar ${customerName} ji,
+        function generate451Message(customerName, customerNumber, activationType, oldPlanRental) {
+            let message = `Namaskar ${customerName} ji,
 Your ${activationType} Number ${customerNumber} Taken Request for.
 *1 Connections Plan*
-💰 Monthly Rental: ₹451/- Only
+💰 Monthly Rental: ₹451/- Only`;
+
+            // Add old rental if selected
+            if (oldPlanRental) {
+                const oldRentalDisplay = oldPlanRental === 'Below 299' ? oldPlanRental : `₹${oldPlanRental}`;
+                message += `\n📊 Your Previous Rental was: ${oldRentalDisplay}`;
+            }
+
+            message += `
 ━━━━━━━━━━━━
 👑 Benefits
 📶 50GB Data with 200GB Rollover
 🌙 Unlimited Night Data
 ⚡ Unlimited 5G (Area+Handset)*
-📞 Unlimited Calls (India)
-✉️ 3000 SMS / Month (India)
+📞 Unlimited Calls (All India)
+✉️ 3000 SMS / Month (All India)
 ━━━━━━━━━━━━
 🎁 ANY 1 COMPLIMENTARY BENEFITS
 🎬 JioHotstar 1Y
@@ -344,21 +559,31 @@ _Read Plan Details here :www.myvi.in/postpaid/vi-postpaid-plans_
 ✔️ SIM card & numbers received at my premises
 ✔️ No hard copy / photo copy provided to agent and activation completed via digital process
 ✔️ No any Visit Charges Given to Agent
-📍 Accept? *Reply "YES"* or No`;
+📍 *Accept? Reply "YES"* or No`;
+
+            return message;
         }
 
-        function generate551Message(customerName, customerNumber, activationType) {
-            return `Namaskar ${customerName} ji,
+        function generate551Message(customerName, customerNumber, activationType, oldPlanRental) {
+            let message = `Namaskar ${customerName} ji,
 Your ${activationType} Number ${customerNumber} Taken Request for.
 *1 Connections Plan*
-💰 Monthly Rental: ₹551/- Only
+💰 Monthly Rental: ₹551/- Only`;
+
+            // Add old rental if selected
+            if (oldPlanRental) {
+                const oldRentalDisplay = oldPlanRental === 'Below 299' ? oldPlanRental : `₹${oldPlanRental}`;
+                message += `\n📊 Your Previous Rental was: ${oldRentalDisplay}`;
+            }
+
+            message += `
 ━━━━━━━━━━━━
 👑 Benefits
 📶 90GB Data with 200GB Rollover
 🌙 Unlimited Night Data
 ⚡ Unlimited 5G(Area+Handset)*
-📞 Unlimited Calls (India)
-✉️ 3000 SMS / Month (India)
+📞 Unlimited Calls (All India)
+✉️ 3000 SMS / Month (All India)
 ━━━━━━━━━━━━
 🎁 ANY 1 COMPLIMENTARY BENEFITS
 🎬 JioHotstar 1Y
@@ -373,21 +598,31 @@ _Read Plan Details here :www.myvi.in/postpaid/vi-postpaid-plans_
 ✔️ SIM card & numbers received at my premises
 ✔️ No hard copy / photo copy provided to agent and activation completed via digital process
 ✔️ No any Visit Charges Given to Agent
-📍 Accept? *Reply "YES"* or No`;
+📍 *Accept? Reply "YES"* or No`;
+
+            return message;
         }
 
-        function generateFamilyMessage(customerName, customerNumber, activationType, totalConnections, planRental, primaryData, shareableData) {
-            return `Namaskar ${customerName} ji,
+        function generateFamilyMessage(customerName, customerNumber, activationType, totalConnections, planRental, primaryData, shareableData, oldPlanRental) {
+            let message = `Namaskar ${customerName} ji,
 Your ${activationType} Number ${customerNumber} Taken Request for.
 👨‍👩‍👧‍👦 *${totalConnections} Connections Plan*
-💰 Monthly Rental: ₹${planRental}/- Only
+💰 Monthly Rental: ₹${planRental}/- Only`;
+
+            // Add old rental if selected
+            if (oldPlanRental) {
+                const oldRentalDisplay = oldPlanRental === 'Below 299' ? oldPlanRental : `₹${oldPlanRental}`;
+                message += `\n📊 Your Previous Rental was: ${oldRentalDisplay}`;
+            }
+
+            message += `
 ━━━━━━━━━━━━
 👑 Primary Number Benefits
 📶 ${primaryData} Data with 200GB Rollover
 🌙 Unlimited Night Data
 ⚡ Unlimited 5G (Area+Handset)*
-📞 Unlimited Calls (India)
-✉️ 3000 SMS / Month (India)
+📞 Unlimited Calls (All India)
+✉️ 3000 SMS / Month (All India)
 ━━━━━━━━━━━━
 👨‍👩‍👦 Additional Family Members Get
 📶 40GB Data with 200GB Rollover
@@ -409,7 +644,9 @@ _Read Plan Details here :www.myvi.in/postpaid/vi-postpaid-plans_
 ✔️ SIM card & numbers received at my premises
 ✔️ No hard copy / photo copy provided to agent and activation completed via digital process
 ✔️ No any Visit Charges Given to Agent
-📍 Accept? *Reply "YES"* or No`;
+📍 *Accept? Reply "YES"* or No`;
+
+            return message;
         }
 
         form.addEventListener('submit', function(e) {
@@ -417,7 +654,6 @@ _Read Plan Details here :www.myvi.in/postpaid/vi-postpaid-plans_
 
             const phoneNumber = document.getElementById('phoneNumber').value;
             
-            // Validate phone number
             if (phoneNumber.length !== 10 || !/^\d+$/.test(phoneNumber)) {
                 alert('Please enter a valid 10-digit phone number');
                 return;
@@ -430,10 +666,7 @@ _Read Plan Details here :www.myvi.in/postpaid/vi-postpaid-plans_
                 return;
             }
 
-            // Create WhatsApp URL
             const whatsappURL = `https://wa.me/91${phoneNumber}?text=${encodeURIComponent(message)}`;
-            
-            // Open WhatsApp
             window.open(whatsappURL, '_blank');
         });
 
