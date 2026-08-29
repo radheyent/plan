@@ -397,16 +397,12 @@
                     <label for="planRental">Plan Rental <span class="required">*</span></label>
                     <select id="planRental" required>
                         <option value="">Select Plan</option>
-                        <option value="451" data-connections="1">₹451</option>
-                        <option value="551" data-connections="1">₹551</option>
-                        <option value="701" data-connections="2,3,4,5">₹701</option>
-                        <option value="1000" data-connections="2,3,4,5">₹1000</option>
-                        <option value="1201" data-connections="2,3,4,5">₹1201</option>
-                        <option value="1401" data-connections="2,3,4,5">₹1401</option>
-                        <option value="701U" data-connections="2,3,4,5" data-activation="MNP">₹701 Unlimited</option>
-                        <option value="1000U" data-connections="2,3,4,5" data-activation="MNP">₹1000 Unlimited</option>
-                        <option value="1201U" data-connections="2,3,4,5" data-activation="MNP">₹1201 Unlimited</option>
-                        <option value="1401U" data-connections="2,3,4,5" data-activation="MNP">₹1401 Unlimited</option>
+                        <option value="451" data-connections="1">₹451 Unlimited</option>
+                        <option value="551" data-connections="1">₹551 Unlimited</option>
+                        <option value="701U" data-connections="2,3,4,5">₹701 Unlimited</option>
+                        <option value="1000U" data-connections="2,3,4,5">₹1000 Unlimited</option>
+                        <option value="1201U" data-connections="2,3,4,5">₹1201 Unlimited</option>
+                        <option value="1401U" data-connections="2,3,4,5">₹1401 Unlimited</option>
                     </select>
                 </div>
 
@@ -474,18 +470,17 @@
         // GitHub raw image base URL
         const IMAGE_BASE_URL = 'https://raw.githubusercontent.com/radheyent/plan/main/images/';
 
-        // Plan to image file mapping (exact file names from GitHub)
+        // Plan to image file mapping (only single-connection plans have images)
         const planImageMap = {
-            '451':  'VM451.jpeg',
-            '551':  'VM551.jpeg',
-            '701':  'VMF701.jpg',
-            '1000': 'VMF1000.jpg',
-            '1201': 'VMF1201.jpg',
-            '1401': 'VMF1401.jpg',
+            '451': 'VM451.jpeg',
+            '551': 'VM551.jpeg',
         };
 
-        // Discounted rental for Unlimited plans (₹100 off): base plan value -> discounted amount
+        // Discounted rental for Unlimited plans (₹100 off), applied only for MNP activation:
+        // base plan value -> discounted amount
         const unlimitedDiscountMap = {
+            '451': 351,
+            '551': 451,
             '701U': 601,
             '1000U': 899
         };
@@ -513,10 +508,10 @@
             updatePreview();
         });
 
-        // Filter plan options by Total Connections AND Activation Type (Unlimited plans require MNP)
+        // Filter plan options by Total Connections only (all family plans are now Unlimited,
+        // available regardless of Activation Type)
         function filterPlanOptions() {
             const selectedConnections = totalConnectionsSelect.value;
-            const selectedActivation = activationTypeSelect.value;
             const planOptions = planRentalSelect.querySelectorAll('option');
 
             planOptions.forEach(option => {
@@ -526,7 +521,6 @@
                 }
 
                 const allowedConnections = option.getAttribute('data-connections');
-                const requiredActivation = option.getAttribute('data-activation');
 
                 let visible;
                 if (selectedConnections === '1') {
@@ -535,10 +529,6 @@
                     visible = true;
                 } else {
                     visible = allowedConnections && allowedConnections.includes(selectedConnections);
-                }
-
-                if (requiredActivation && requiredActivation !== selectedActivation) {
-                    visible = false;
                 }
 
                 option.style.display = visible ? 'block' : 'none';
@@ -553,13 +543,9 @@
             updatePreview();
         });
 
-        // Re-filter when Activation Type changes (Unlimited plans are MNP-only)
-        activationTypeSelect.addEventListener('change', function() {
-            filterPlanOptions();
-            planRentalSelect.value = '';
-            updateDownloadButton('');
-            updatePreview();
-        });
+        // Activation Type no longer restricts which plans are selectable (only Unlimited
+        // plans exist now), but it still affects the MNP discount, so refresh the preview.
+        activationTypeSelect.addEventListener('change', updatePreview);
 
         // Show/hide download button when plan changes
         planRentalSelect.addEventListener('change', function() {
@@ -631,41 +617,27 @@
                 return '';
             }
 
-            let primaryData, shareableData;
-            
-            switch(planRental) {
+            switch (planRental) {
                 case '451':
                     return generate451Message(customerName, customerNumber, activationType, oldPlanRental);
                 case '551':
                     return generate551Message(customerName, customerNumber, activationType, oldPlanRental);
-                case '701':
-                case '1000':
-                    primaryData = '70GB';
-                    shareableData = '10GB';
-                    break;
-                case '1201':
-                case '1401':
-                    primaryData = '140GB';
-                    shareableData = '20GB';
-                    break;
-                case '701U':
-                case '1000U':
-                case '1201U':
-                case '1401U':
-                    // Unlimited plans - no fixed data quota
-                    primaryData = null;
-                    shareableData = null;
-                    break;
+                default:
+                    // 701U, 1000U, 1201U, 1401U — Unlimited family plans
+                    return generateFamilyMessage(customerName, customerNumber, activationType, totalConnections, planRental, oldPlanRental);
             }
-
-            return generateFamilyMessage(customerName, customerNumber, activationType, totalConnections, planRental, primaryData, shareableData, oldPlanRental);
         }
 
         function generate451Message(customerName, customerNumber, activationType, oldPlanRental) {
+            const discountedRental = (activationType === 'MNP') ? unlimitedDiscountMap['451'] : undefined;
+            const rentalLine = discountedRental
+                ? `💰 Monthly Rental: ~₹451~ ₹${discountedRental}/- Only`
+                : `💰 Monthly Rental: ₹451/- Only`;
+
             let message = `Namaskar ${customerName} ji,
 Your ${activationType} Number ${customerNumber} Taken Request for.
 *1 Connections Plan*
-💰 Monthly Rental: ₹451/- Only`;
+${rentalLine}`;
 
             if (oldPlanRental) {
                 const oldRentalDisplay = oldPlanRental === 'Below 299' ? oldPlanRental : `₹${oldPlanRental}`;
@@ -675,7 +647,7 @@ Your ${activationType} Number ${customerNumber} Taken Request for.
             message += `
 ━━━━━━━━━━━━
 👑 Benefits
-📶 50GB Data with 200GB Rollover
+📶 UNLIMITED DATA (Limitless DATA)
 🌙 Unlimited Night Data
 ⚡ Unlimited 5G (Area+Handset)*
 📞 Unlimited Calls (All India)
@@ -699,10 +671,15 @@ _Read Plan Details here :www.myvi.in/postpaid/vi-postpaid-plans_
         }
 
         function generate551Message(customerName, customerNumber, activationType, oldPlanRental) {
+            const discountedRental = (activationType === 'MNP') ? unlimitedDiscountMap['551'] : undefined;
+            const rentalLine = discountedRental
+                ? `💰 Monthly Rental: ~₹551~ ₹${discountedRental}/- Only`
+                : `💰 Monthly Rental: ₹551/- Only`;
+
             let message = `Namaskar ${customerName} ji,
 Your ${activationType} Number ${customerNumber} Taken Request for.
 *1 Connections Plan*
-💰 Monthly Rental: ₹551/- Only`;
+${rentalLine}`;
 
             if (oldPlanRental) {
                 const oldRentalDisplay = oldPlanRental === 'Below 299' ? oldPlanRental : `₹${oldPlanRental}`;
@@ -712,7 +689,7 @@ Your ${activationType} Number ${customerNumber} Taken Request for.
             message += `
 ━━━━━━━━━━━━
 👑 Benefits
-📶 90GB Data with 200GB Rollover
+📶 UNLIMITED DATA (Limitless DATA)
 🌙 Unlimited Night Data
 ⚡ Unlimited 5G(Area+Handset)*
 📞 Unlimited Calls (All India)
@@ -736,10 +713,12 @@ _Read Plan Details here :www.myvi.in/postpaid/vi-postpaid-plans_
             return message;
         }
 
-        function generateFamilyMessage(customerName, customerNumber, activationType, totalConnections, planRental, primaryData, shareableData, oldPlanRental) {
-            const isUnlimited = planRental.endsWith('U');
-            const baseRental = isUnlimited ? planRental.slice(0, -1) : planRental;
-            const discountedRental = unlimitedDiscountMap[planRental];
+        function generateFamilyMessage(customerName, customerNumber, activationType, totalConnections, planRental, oldPlanRental) {
+            // planRental is always an Unlimited plan now (e.g. '701U') — strip the 'U' suffix for display
+            const baseRental = planRental.slice(0, -1);
+
+            // Discount is only available on MNP activation, same concept as before
+            const discountedRental = (activationType === 'MNP') ? unlimitedDiscountMap[planRental] : undefined;
 
             const rentalLine = discountedRental
                 ? `💰 Monthly Rental: ~₹${baseRental}~ ₹${discountedRental}/- Only`
@@ -755,29 +734,17 @@ ${rentalLine}`;
                 message += `\n📊 Your Previous Rental was: ${oldRentalDisplay}`;
             }
 
-            const primaryDataLine = isUnlimited
-                ? '📶 UNLIMITED DATA (Limitless DATA)'
-                : `📶 ${primaryData} Data with 200GB Rollover`;
-
-            const additionalDataLine = isUnlimited
-                ? '📶 UNLIMITED DATA (Limitless DATA)'
-                : '📶 40GB Data with 200GB Rollover';
-
-            const shareableLine = isUnlimited
-                ? ''
-                : `\n🎉 *Wohoo! Get ${shareableData} Extra Shareable Data within Family Members*`;
-
             message += `
 ━━━━━━━━━━━━
 👑 Primary Number Benefits
-${primaryDataLine}
+📶 UNLIMITED DATA (Limitless DATA)
 🌙 Unlimited Night Data
 ⚡ Unlimited 5G (Area+Handset)*
 📞 Unlimited Calls (All India)
 ✉️ 3000 SMS / Month (All India)
 ━━━━━━━━━━━━
 👨‍👩‍👦 Additional Family Members Get
-${additionalDataLine}${shareableLine}
+📶 UNLIMITED DATA (Limitless DATA)
 ━━━━━━━━━━━━
 🎁 ANY 2 COMPLIMENTARY BENEFITS
 📺 Vi Movies & TV 3M
