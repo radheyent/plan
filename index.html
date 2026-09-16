@@ -481,15 +481,6 @@
             '1401U': 'VMF1401.jpg',
         };
 
-        // Discounted rental for Unlimited plans (₹100 off), applied only for MNP activation:
-        // base plan value -> discounted amount
-        const unlimitedDiscountMap = {
-            '451': 351,
-            '551': 451,
-            '701U': 601,
-            '1000U': 899
-        };
-
         let oldRentalVisible = false;
         let lastDownloadedPlan = null;
 
@@ -548,8 +539,7 @@
             updatePreview();
         });
 
-        // Activation Type no longer restricts which plans are selectable (only Unlimited
-        // plans exist now), but it still affects the MNP discount, so refresh the preview.
+        // Activation Type change still refreshes the preview (Namaskar line uses it)
         activationTypeSelect.addEventListener('change', updatePreview);
 
         // Show/hide download button when plan changes
@@ -634,10 +624,7 @@
         }
 
         function generate451Message(customerName, customerNumber, activationType, oldPlanRental) {
-            const discountedRental = (activationType === 'MNP') ? unlimitedDiscountMap['451'] : undefined;
-            const rentalLine = discountedRental
-                ? `💰 Monthly Rental: ~₹451~ ₹${discountedRental}/- Only`
-                : `💰 Monthly Rental: ₹451/- Only`;
+            const rentalLine = `💰 Monthly Rental: ₹451/- Only`;
 
             let message = `Namaskar ${customerName} ji,
 Your ${activationType} Number ${customerNumber} Taken Request for.
@@ -676,10 +663,7 @@ _Read Plan Details here :www.myvi.in/postpaid/vi-postpaid-plans_
         }
 
         function generate551Message(customerName, customerNumber, activationType, oldPlanRental) {
-            const discountedRental = (activationType === 'MNP') ? unlimitedDiscountMap['551'] : undefined;
-            const rentalLine = discountedRental
-                ? `💰 Monthly Rental: ~₹551~ ₹${discountedRental}/- Only`
-                : `💰 Monthly Rental: ₹551/- Only`;
+            const rentalLine = `💰 Monthly Rental: ₹551/- Only`;
 
             let message = `Namaskar ${customerName} ji,
 Your ${activationType} Number ${customerNumber} Taken Request for.
@@ -722,12 +706,7 @@ _Read Plan Details here :www.myvi.in/postpaid/vi-postpaid-plans_
             // planRental is always an Unlimited plan now (e.g. '701U') — strip the 'U' suffix for display
             const baseRental = planRental.slice(0, -1);
 
-            // Discount is only available on MNP activation, same concept as before
-            const discountedRental = (activationType === 'MNP') ? unlimitedDiscountMap[planRental] : undefined;
-
-            const rentalLine = discountedRental
-                ? `💰 Monthly Rental: ~₹${baseRental}~ ₹${discountedRental}/- Only`
-                : `💰 Monthly Rental: ₹${baseRental}/- Only`;
+            const rentalLine = `💰 Monthly Rental: ₹${baseRental}/- Only`;
 
             let message = `Namaskar ${customerName} ji,
 Your ${activationType} Number ${customerNumber} Taken Request for.
